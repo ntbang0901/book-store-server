@@ -85,7 +85,7 @@ exports.getUser = getUser;
 function createUser(userInfo) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
-      const { ngaysinh, email, username, password } = userInfo;
+      const { ngaysinh, email, username, passwor, sdt } = userInfo;
       const _ngaysinh = new Date(ngaysinh);
       const _ngaytao = new Date();
       const _ngaycapnhat = new Date();
@@ -108,7 +108,7 @@ function createUser(userInfo) {
 
       if (user) {
         return {
-          code: 400,
+          error: 1,
           message: "this username is already used",
         };
       }
@@ -120,8 +120,21 @@ function createUser(userInfo) {
       });
       if (userEmail) {
         return {
-          code: 400,
+          error: 2,
+
           message: "this email is already used",
+        };
+      }
+
+      const userPhone = yield prismaClient.users.findUnique({
+        where: {
+          sdt: sdt,
+        },
+      });
+      if (userPhone) {
+        return {
+          error: 3,
+          message: "this phone is already used",
         };
       }
 
@@ -132,7 +145,7 @@ function createUser(userInfo) {
       );
 
       return {
-        code: 200,
+        error: 0,
         elements: yield otp_service.createtOTP(email),
       };
     } catch (error) {
