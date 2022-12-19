@@ -24,6 +24,9 @@ route.post("/newuser", User_controller_1.default.newUser);
 
 route.post("/verifyOTP", User_controller_1.default.verifyOTPUser);
 route.post("/createOtp", User_controller_1.default.createOtp);
+
+route.get("/getall", User_controller_1.default.getUsers);
+
 route.post(
   "/updateinfo",
   verifyToken_1.verifyToken,

@@ -93,7 +93,7 @@ function verifyUser(user, pass) {
     return new Promise((resolve, reject) =>
       __awaiter(this, void 0, void 0, function* () {
         try {
-          const result = yield prisma_client_1.default.users.findFirst({
+          const result = yield prisma_client_1.default.users.findUnique({
             where: {
               username: user,
             },
@@ -104,8 +104,20 @@ function verifyUser(user, pass) {
               ho: true,
               ten: true,
               islocked: true,
+              loaiuserid: true,
+              user_roles: {
+                include: {
+                  roles: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
             },
           });
+
+          console.log(result);
           if (result) {
             const { username, password } = result;
             const checkPass = yield (0, hash_bcrypt_1.comparePass)(

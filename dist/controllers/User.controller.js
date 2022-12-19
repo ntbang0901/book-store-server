@@ -84,8 +84,11 @@ class User {
   getUsers(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
       try {
-        const data = userService.getAllUser();
-        res.json(data);
+        const { username } = req.body;
+        console.log("username", username);
+        const data = yield userService.getAllUser(username);
+        console.log(data);
+        return res.json(data);
       } catch (error) {
         const err = newError.InternalServerError(
           error instanceof Error ? error.message : "Can't get message of error"

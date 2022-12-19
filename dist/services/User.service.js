@@ -48,9 +48,31 @@ const otp_service = require("../services/Otp.service");
 
 const bcrypt = require("bcrypt");
 
-function getAllUser() {
+function getAllUser(username) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
+      console.log(username);
+      const result = yield prismaClient.users.findUnique({
+        where: {
+          username,
+        },
+        select: {
+          user_roles: {
+            include: {
+              roles: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      return {
+        error: 0,
+        data: result,
+      };
       // const data = await userModel.getAllUsers();
     } catch (error) {
       throw error;
@@ -187,6 +209,8 @@ exports.verifiedOTPCreateUser = verifiedOTPCreateUser;
 function updateUser(id, data) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
+      console.log(data);
+
       const result = yield prismaClient.users.update({
         where: { id: id },
         data: data,

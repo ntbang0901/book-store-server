@@ -96,16 +96,21 @@ class Account {
           password
         );
         if (user) {
-          const code = user.islocked ? 0 : -1;
-          const data = user.islocked
-            ? {
-                currentUser: user,
-                token: yield (0, jsonwebtoken_1.signToken)(user),
-                refreshToken: yield (0, jsonwebtoken_1.signRefreshToken)(user),
-              }
-            : null;
+          console.log(user);
+          const code = user.islocked === false ? 0 : -1;
+          const data =
+            user.islocked === false
+              ? {
+                  currentUser: user,
+                  token: yield (0, jsonwebtoken_1.signToken)(user),
+                  refreshToken: yield (0, jsonwebtoken_1.signRefreshToken)(
+                    user
+                  ),
+                }
+              : null;
 
-          const message = user.islocked ? "Login done!" : "user is blocked!";
+          const message =
+            user.islocked === false ? "Login done!" : "user is blocked!";
 
           delete user.islocked;
 

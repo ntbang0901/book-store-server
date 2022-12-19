@@ -50,7 +50,7 @@ Content-Type: application/json
 
 
 ###
-POST http://localhost:3001/user/newUser
+POST http://localhost:3002/user/newUser
 Content-Type: application/json
 
 {
@@ -86,11 +86,11 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3001/user/createOtp
+GET http://localhost:3002/user/getall
 Content-Type: application/json
 
 {
-    "email" : "tien1111"
+    "username" : "tai"
 }
 
 
@@ -103,7 +103,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3001/cart/gettotalcart
+GET http://localhost:3002/cart/gettotalcart
 Content-Type: application/json
 
 {
