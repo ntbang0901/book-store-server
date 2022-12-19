@@ -85,7 +85,7 @@ exports.getUser = getUser;
 function createUser(userInfo) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
-      const { ngaysinh, email, username, passwor, sdt } = userInfo;
+      const { ngaysinh, email, username, password, sdt } = userInfo;
       const _ngaysinh = new Date(ngaysinh);
       const _ngaytao = new Date();
       const _ngaycapnhat = new Date();
