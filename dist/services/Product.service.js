@@ -105,11 +105,6 @@ function getProduct(
           let skip = (page - 1) * elementOfPage;
           let take = elementOfPage;
 
-          console.log({
-            loaisanphamid: loaisanphamid,
-            sach: optionsBook,
-            vanphongpham: optionsStationery,
-          });
           const optionsBook_ = optionsBook;
           const optionsStationery_ = optionsStationery;
 

@@ -126,9 +126,7 @@ class Cart {
     return __awaiter(this, void 0, void 0, function* () {
       try {
         const { user } = req;
-        // const { username } = req.body;
         const data = yield cartService.getTotalCart(user.username);
-        // console.log("Controller:::",data);
         res.json(data);
       } catch (error) {
         const err = newError.InternalServerError(

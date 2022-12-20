@@ -110,7 +110,7 @@ class Account {
           console.log("user", user);
 
           const message =
-            user.islocked === false ? "Login done!" : "user is blocked!";
+            user.islocked === false ? "Login done!" : "user is locked!";
 
           delete user.islocked;
 

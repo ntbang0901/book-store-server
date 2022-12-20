@@ -93,7 +93,6 @@ function verifyOtp(email, otp) {
       }
 
       const isvalid = yield bcrypt.compare(otp, otpHolder.otp);
-      console.log("isvalid:::", isvalid);
       if (!isvalid) {
         return {
           code: 401,

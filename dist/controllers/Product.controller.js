@@ -118,7 +118,6 @@ class Product {
         //     },
         //   }
         // );
-        console.log("options_", options_["loaisanphamid"]);
         const result = yield (0, Product_service_1.getProduct)(
           +id,
           +page,

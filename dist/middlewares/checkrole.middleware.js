@@ -106,7 +106,6 @@ function checkroleAdmin(req, res, next) {
       const { user_roles } = req.user;
       if (user_roles.length > 0) {
         const role = user_roles[user_roles.length - 1].roles.name;
-        console.log("role", role);
         if (role === "ADMIN") {
           return next();
         }

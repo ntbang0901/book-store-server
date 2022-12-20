@@ -85,7 +85,6 @@ class User {
     return __awaiter(this, void 0, void 0, function* () {
       try {
         const data = yield userService.getAllUser();
-        console.log(data);
         return res.json(data);
       } catch (error) {
         const err = newError.InternalServerError(
@@ -247,7 +246,6 @@ class User {
     return __awaiter(this, void 0, void 0, function* () {
       try {
         const { email, otp } = req.body;
-        console.log({ email, otp });
         let result = yield userService.verifiedOTPFogotPassword(email, otp);
 
         return res.json(result);
@@ -264,7 +262,6 @@ class User {
     return __awaiter(this, void 0, void 0, function* () {
       try {
         const { email } = req.body;
-        console.log("email", email);
         let result = yield userService.FogotPassword(email);
         if (result.error === 0) {
           return res.json(result);

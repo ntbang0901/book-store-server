@@ -107,6 +107,12 @@ exports.getUser = getUser;
 function createUser(userInfo) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
+      if (userInfo.username === userInfo.password) {
+        return {
+          error: 4,
+          message: "faild",
+        };
+      }
       const { ngaysinh, email, username, password, sdt } = userInfo;
       const _ngaysinh = new Date(ngaysinh);
       const _ngaytao = new Date();
@@ -288,7 +294,6 @@ exports.verifiedOTPFogotPassword = verifiedOTPFogotPassword;
 function updateUser(id, data) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
-      console.log(test);
       const result = yield prismaClient.users.update({
         where: { id: id },
         data: data,

@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "username" : "tai",
-    "password" : "1234"
+    "password" : "123"
 }
 
 ###
@@ -145,7 +145,7 @@ Content-Type: application/json
 
 
 ###
-POST http://localhost:3001/user/newuser
+POST http://localhost:3002/user/newuser
 Content-Type: application/json
 
 {
@@ -155,10 +155,10 @@ Content-Type: application/json
     "ngaysinh" : "09/12/2001",
     "gioitinh" : true,
     "diachi" : "XL",
-    "sdt" : "0982345618",
-    "email" : "tien101100",
-    "username" : "login010101",
-    "password" : "1234",
+    "sdt" : "0982345444",
+    "email" : "ntbang0901@gmail.com",
+    "username" : "nguyenthanhbang",
+    "password" : "nguyenthanhbang",
     "isactived" :true
     }
 }
