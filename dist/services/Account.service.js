@@ -86,8 +86,10 @@ exports.changePass = exports.logOut = exports.verifyUser = void 0;
 const jwt = require("../helpers/jsonwebtoken");
 const prisma_client_1 = __importDefault(require("../helpers/prisma_client"));
 const newError = __importStar(require("http-errors"));
+const user_service = require("../services/User.service");
 const hash_bcrypt_1 = require("../helpers/hash_bcrypt");
 const redisClient = require("../helpers/redis_client");
+const e = require("cors");
 function verifyUser(user, pass) {
   return __awaiter(this, void 0, void 0, function* () {
     return new Promise((resolve, reject) =>
@@ -117,18 +119,64 @@ function verifyUser(user, pass) {
             },
           });
 
-          console.log(result);
           if (result) {
-            const { username, password } = result;
+            const { username, password, id, islocked } = result;
+
+            const checkExist = yield redisClient.exists(
+              result.username + "countfaild",
+              async (err, exist) => {
+                if (err) console.log("err", err);
+                return exist;
+              }
+            );
+            if (islocked && checkExist === 1) {
+              return resolve(result);
+            }
+            if (islocked && checkExist === 0) {
+              yield prisma_client_1.default.users.update({
+                where: {
+                  id: id,
+                },
+                data: {
+                  islocked: false,
+                },
+              });
+              result.islocked = false;
+            }
             const checkPass = yield (0, hash_bcrypt_1.comparePass)(
               pass,
               password
             );
             if (user == username && checkPass) {
+              console.log(123);
               delete result.password;
               resolve(result);
             } else {
-              resolve(null);
+              if (checkExist === 1) {
+                const faild = yield redisClient.get(username + "countfaild");
+
+                if (+faild > 4) {
+                  yield prisma_client_1.default.users.update({
+                    where: {
+                      id: id,
+                    },
+                    data: {
+                      islocked: true,
+                    },
+                  });
+
+                  resolve(null);
+                }
+
+                yield redisClient.set(username + "countfaild", +faild + 1, {
+                  EX: 60 * 5,
+                });
+              } else {
+                yield redisClient.set(username + "countfaild", 1, {
+                  EX: 60 * 5,
+                });
+                resolve(null);
+              }
             }
           }
 

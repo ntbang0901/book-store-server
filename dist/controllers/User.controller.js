@@ -84,9 +84,7 @@ class User {
   getUsers(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
       try {
-        const { username } = req.body;
-        console.log("username", username);
-        const data = yield userService.getAllUser(username);
+        const data = yield userService.getAllUser();
         console.log(data);
         return res.json(data);
       } catch (error) {

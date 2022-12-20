@@ -96,7 +96,6 @@ class Account {
           password
         );
         if (user) {
-          console.log(user);
           const code = user.islocked === false ? 0 : -1;
           const data =
             user.islocked === false
@@ -108,6 +107,7 @@ class Account {
                   ),
                 }
               : null;
+          console.log("user", user);
 
           const message =
             user.islocked === false ? "Login done!" : "user is blocked!";
@@ -203,6 +203,8 @@ class Account {
           username: payload.username,
           ho: payload.ho,
           ten: payload.ten,
+          loaiuserid: payload.loaiuserid,
+          user_roles: payload.user_roles,
         };
         const newToken = yield (0, jsonwebtoken_1.signToken)(user);
         const newRefreshToken = yield (0, jsonwebtoken_1.signRefreshToken)(

@@ -58,6 +58,10 @@ const client = redis.createClient({
   url: process.env.REDIS_URI,
 });
 client.connect();
+client.exists("a", (err, ok) => {
+  if (err) throw err;
+  console.log(ok);
+});
 client.on("error", (err) => console.log("Redis Client Error", err));
 client.on("connect", (err) => console.log("Connect Redis server"));
 client.ping((err, pong) => console.log(pong));

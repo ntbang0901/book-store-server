@@ -51,12 +51,13 @@ const bcrypt = require("bcrypt");
 function getAllUser(username) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
-      console.log(username);
-      const result = yield prismaClient.users.findUnique({
-        where: {
-          username,
-        },
+      const result = yield prismaClient.users.findMany({
         select: {
+          username: true,
+          id: true,
+          sdt: true,
+          email: true,
+          diachi: true,
           user_roles: {
             include: {
               roles: {
@@ -73,7 +74,6 @@ function getAllUser(username) {
         error: 0,
         data: result,
       };
-      // const data = await userModel.getAllUsers();
     } catch (error) {
       throw error;
     }
@@ -288,6 +288,7 @@ exports.verifiedOTPFogotPassword = verifiedOTPFogotPassword;
 function updateUser(id, data) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
+      console.log(test);
       const result = yield prismaClient.users.update({
         where: { id: id },
         data: data,

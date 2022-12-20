@@ -1,10 +1,17 @@
-POST http://localhost:3001/user/login
+POST http://localhost:3002/user/login
 Content-Type: application/json
 
 {
-    "username" : "admin",
-    "password" : "123"
+    "username" : "tai",
+    "password" : "1234"
 }
+
+###
+GET http://localhost:3002/user/getall
+Content-Type: application/json
+X-Token : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRhaSIsImlkIjo2LCJobyI6InRydW9uZyIsInRlbiI6InRhaSIsImlzbG9ja2VkIjpmYWxzZSwibG9haXVzZXJpZCI6MSwidXNlcl9yb2xlcyI6W3sicm9sZWlkIjoxLCJ1c2VyaWQiOjYsInJvbGVzIjp7Im5hbWUiOiJBRE1JTiJ9fV0sImlhdCI6MTY3MTUyNTA3MiwiZXhwIjoxNjcxNTI1MDgyfQ.ojyWQc4CWrJTZHcFqvixVWd_MVRzLsVzVXrFPWjQWYY"
+
+
 
 ###
 
@@ -86,12 +93,6 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3002/user/fogotpass
-Content-Type: application/json
-
-{
-    "email":"ntbang0901@gmail.com"
-}
 
 ###
 
