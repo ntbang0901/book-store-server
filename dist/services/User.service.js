@@ -51,6 +51,8 @@ const bcrypt = require("bcrypt");
 function getAllUser(username) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
+      const total = yield prismaClient.users.count();
+
       const result = yield prismaClient.users.findMany({
         select: {
           username: true,
@@ -58,6 +60,8 @@ function getAllUser(username) {
           sdt: true,
           email: true,
           diachi: true,
+          ho: true,
+          ten: true,
           user_roles: {
             include: {
               roles: {
@@ -73,6 +77,7 @@ function getAllUser(username) {
       return {
         error: 0,
         data: result,
+        total: total,
       };
     } catch (error) {
       throw error;
