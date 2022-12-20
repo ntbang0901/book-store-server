@@ -177,6 +177,33 @@ function createUser(userInfo) {
 }
 exports.createUser = createUser;
 
+function FogotPassword(userInfo) {
+  return __awaiter(this, void 0, void 0, function* () {
+    try {
+      const { email } = userInfo;
+
+      const userEmail = yield prismaClient.users.findUnique({
+        where: {
+          email: email,
+        },
+      });
+      if (!userEmail) {
+        return {
+          error: 2,
+          message: "email is not found",
+        };
+      }
+      return {
+        error: 0,
+        elements: yield otp_service.createtOTP(email),
+      };
+    } catch (error) {
+      throw error;
+    }
+  });
+}
+exports.FogotPassword = FogotPassword;
+
 function verifiedOTPCreateUser(email, otp) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
@@ -206,11 +233,29 @@ function verifiedOTPCreateUser(email, otp) {
 }
 exports.verifiedOTPCreateUser = verifiedOTPCreateUser;
 
+function verifiedOTPFogotPassword(email, otp) {
+  return __awaiter(this, void 0, void 0, function* () {
+    try {
+      let result = yield otp_service.verifyOtp(email, otp);
+      if (result.code !== 200) {
+        return result;
+      }
+      return {
+        code: 200,
+        message: "success",
+      };
+    } catch (error) {
+      throw error;
+    }
+    // return data;
+  });
+}
+
+exports.verifiedOTPFogotPassword = verifiedOTPFogotPassword;
+
 function updateUser(id, data) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
-      console.log(data);
-
       const result = yield prismaClient.users.update({
         where: { id: id },
         data: data,
@@ -228,3 +273,27 @@ function updateUser(id, data) {
   });
 }
 exports.updateUser = updateUser;
+
+function updatePassword(email, passwordOld) {
+  return __awaiter(this, void 0, void 0, function* () {
+    try {
+      const salt = yield bcrypt.genSalt(10);
+      const newpassword = yield bcrypt.hash(passwordOld.toString(), salt);
+
+      const result = yield prismaClient.users.update({
+        where: { email: email },
+        data: { password: newpassword },
+      });
+      if (!result) {
+        return {
+          code: 400,
+          message: "update faild",
+        };
+      }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  });
+}
+exports.updatePassword = updatePassword;

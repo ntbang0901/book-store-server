@@ -229,5 +229,61 @@ class User {
       }
     });
   }
+
+  createOtpFogot(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+      try {
+        const { data } = req.body;
+        let result = yield userService.FogotPassword(data);
+        return res.status(200).json(result);
+      } catch (error) {
+        const err = newError.InternalServerError(
+          error instanceof Error ? error.message : "Can't get message of error"
+        );
+        next(err);
+      }
+    });
+  }
+
+  verifiedOTPFogotPassword(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+      try {
+        const { email, otp } = req.body;
+        console.log({ email, otp });
+        let result = yield userService.verifiedOTPFogotPassword(email, otp);
+
+        return res.json(result);
+      } catch (error) {
+        const err = newError.InternalServerError(
+          error instanceof Error ? error.message : "Can't get message of error"
+        );
+        next(err);
+      }
+    });
+  }
+
+  newpass(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+      try {
+        const { data } = req.body;
+        let result = yield userService.updatePassword(
+          data.email,
+          data.password
+        );
+        if (result) {
+          return res.json({
+            code: 200,
+            message: "update success",
+          });
+        }
+        return res.json(result);
+      } catch (error) {
+        const err = newError.InternalServerError(
+          error instanceof Error ? error.message : "Can't get message of error"
+        );
+        next(err);
+      }
+    });
+  }
 }
 module.exports = new User();

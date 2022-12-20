@@ -86,12 +86,43 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3002/user/getall
+POST http://localhost:3002/user/optfogotpass
 Content-Type: application/json
 
 {
-    "username" : "tai"
+    "data":{
+        "email" : "ntbang0901@gmail.com"
+    }
 }
+
+###
+
+POST http://localhost:3002/user/verifyotpfogotpass
+Content-Type: application/json
+
+{
+   
+        "email" : "ntbang0901@gmail.com",
+        "otp":384636
+        
+    
+}
+
+###
+
+POST http://localhost:3002/user/updatepasss
+Content-Type: application/json
+
+{
+   
+        "data":{
+            "email" : "ntbang0901@gmail.com",
+            "password":"123"
+        }
+        
+    
+}
+
 
 
 ###
