@@ -262,19 +262,14 @@ class User {
     });
   }
 
-  newpass(req, res, next) {
+  FogotPassword(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
       try {
-        const { data } = req.body;
-        let result = yield userService.updatePassword(
-          data.email,
-          data.password
-        );
-        if (result) {
-          return res.json({
-            code: 200,
-            message: "update success",
-          });
+        const { email } = req.body;
+        console.log("email", email);
+        let result = yield userService.FogotPassword(email);
+        if (result.error === 0) {
+          return res.json(result);
         }
         return res.json(result);
       } catch (error) {

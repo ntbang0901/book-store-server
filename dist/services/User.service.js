@@ -43,7 +43,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createUser = exports.getAllUser = void 0;
 const prismaClient = require("../helpers/prisma_client");
 const redis_client_1 = __importDefault(require("../helpers/redis_client"));
-
+const mailer_1 = __importDefault(require("../helpers/mailer"));
 const otp_service = require("../services/Otp.service");
 
 const bcrypt = require("bcrypt");
@@ -177,25 +177,57 @@ function createUser(userInfo) {
 }
 exports.createUser = createUser;
 
-function FogotPassword(userInfo) {
+async function generatePassword() {
+  var length = 8,
+    charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+    retVal = "";
+  for (var i = 0, n = charset.length; i < length; ++i) {
+    retVal += charset.charAt(Math.floor(Math.random() * n));
+  }
+  return retVal;
+}
+
+function FogotPassword(email) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
-      const { email } = userInfo;
-
       const userEmail = yield prismaClient.users.findUnique({
         where: {
           email: email,
         },
       });
+
       if (!userEmail) {
         return {
           error: 2,
           message: "email is not found",
         };
       }
+
+      const randomPass = yield generatePassword();
+      const salt = yield bcrypt.genSalt(10);
+      const newpassword = yield bcrypt.hash(randomPass.toString(), salt);
+
+      const result = yield prismaClient.users.update({
+        where: { email: email },
+        data: { password: newpassword },
+      });
+
+      yield (0, mailer_1.default)({
+        from: process.env.EMAIL,
+        to: email,
+        subject: "New password book shop",
+        text: `Your new password is ${randomPass}`,
+      });
+
+      if (!result) {
+        return {
+          code: 400,
+          message: "error",
+        };
+      }
       return {
         error: 0,
-        elements: yield otp_service.createtOTP(email),
+        message: "success",
       };
     } catch (error) {
       throw error;
