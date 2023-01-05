@@ -133,13 +133,15 @@ function createUser(userInfo) {
         password: _password,
       };
 
-      const user = yield prismaClient.users.findUnique({
+      console.log(userInfo);
+
+      const usernameCheck = yield prismaClient.users.findUnique({
         where: {
           username: username,
         },
       });
 
-      if (user) {
+      if (usernameCheck) {
         return {
           error: 1,
           message: "this username is already used",
@@ -174,7 +176,7 @@ function createUser(userInfo) {
       yield redis_client_1.default.set(
         "register" + email,
         JSON.stringify(userInfo),
-        { EX: 120 }
+        { EX: 30 * 60 }
       );
 
       return {
